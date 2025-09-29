@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <netinet/in.h>
 #include <stdlib.h>
@@ -7,7 +5,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdbool.h>
-#include <calculator.h>
+#include "calculator.h"
 
 #define INIT_PORT 22000
 #define BUFF_LEN 1024
