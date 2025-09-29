@@ -45,13 +45,18 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     
-    int size_addr = sizeof(serv_address);
+    socklen_t size_addr = sizeof(serv_address);
 
     // Used to connect the socket to the ip and port
     if (bind(server_fd, (struct sockaddr *) &serv_address, size_addr)) {
         printf("Problem binding socket\n");        
         return -1;
     }
+
+    if (getsockname(server_fd, (struct sockaddr *)&serv_address, &size_addr) == -1)
+        perror("getsockname");
+    else
+        printf("port number %d\n", ntohs(serv_address.sin_port));
     
     listen(server_fd, MAX_CLIENT);
     printf("Server is listening");
