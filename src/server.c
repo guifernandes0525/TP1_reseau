@@ -21,9 +21,11 @@ int main(int argc, char *argv[]) {
     }
     else {
         printf("port is %s", argv[1]);
-        serv_port = htons(atoi(argv[1]));
+        serv_port = atoi(argv[1]);
     }
     // server file descriptor
+    printf("port is %s", argv[1]);
+
     int server_fd;
 
     // might need to change the AF_INET to local
