@@ -2,6 +2,9 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 
 void remove_spaces(char* s) {
         char* d = s;
@@ -9,7 +12,7 @@ void remove_spaces(char* s) {
             while (*d == ' ') {
                 ++d;
             }
-        } while (*s++ = *d++);
+        } while ((*s++ = *d++));
     }
 
 int main(int argc, char* argv[]) {
@@ -29,16 +32,15 @@ int main(int argc, char* argv[]) {
     struct sockaddr_in serv_addr;
 
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = argv[1];
-    serv_addr.sin_port = htons(argv[2]);
+    serv_addr.sin_port = htons(atoi(argv[2]));
 
-    if (inet_pton(&serv_addr.sin_family, &serv_addr.sin_addr.s_addr, &serv_addr.sin_addr) <= 0) {
-        printf("Invalid adress\n");
+    if (inet_aton(argv[1],(struct in_addr *) &serv_addr) == 0) {
+        printf("Erreur lecture IP\n");
         return -1;
-    }
+    };
 
-    if (connect(client_socket, &serv_addr, sizeof(serv_addr)) != 0) {
-        printf("Error during connection with the server");
+    if (connect(client_socket, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) != 0) {
+        printf("Error during connection with the server\n");
         return -1;
     }
 
@@ -63,14 +65,16 @@ int main(int argc, char* argv[]) {
 
         size_t len = strlen(send_buffer);
         if (write(client_socket, send_buffer, len) == -1) {
-            printf("Error during message sending");
+            printf("Error during message sending\n");
             break;
         }
 
-        if (read(client_socket, recv_buffer, 1023)) {
-            printf("Error during message reception");
+        ssize_t n = read(client_socket, recv_buffer, 1023);
+        if (n <= 0) {
+            printf("Error during message reception\n");
             break;
         }
+        recv_buffer[n] = '\0';
 
         recv_buffer[1024 - 1] = '\0';
 
