@@ -53,19 +53,18 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    if (getsockname(server_fd, (struct sockaddr *)&serv_address, &size_addr) == -1)
-        perror("getsockname");
-    else
-        printf("port number %d\n", ntohs(serv_address.sin_port));
-    
+
     listen(server_fd, MAX_CLIENT);
-    printf("Server is listening");
+    printf("Server is listening on port %s and ip %s]}", ntohs(&serv_address.sin_port), inet_ntoa(&serv_address.sin_addr));
+
+
+    struct sockaddr_in client_address;
 
     while (true)
     {
         int calc_socket;
-        socklen_t serv_addr_size = sizeof(serv_address);
-        calc_socket = accept(server_fd, (struct sockaddr *) &serv_address, &serv_addr_size);
+        socklen_t client_addr_size = sizeof(client_address);
+        calc_socket = accept(server_fd, (struct sockaddr *) &client_address, &client_addr_size);
         
         if (calc_socket == -1) {
             printf("Problem accepting connection");
