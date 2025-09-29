@@ -53,10 +53,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-
     listen(server_fd, MAX_CLIENT);
-    printf("Server is listening on port %s and ip %s]}", ntohs(&serv_address.sin_port), inet_ntoa(&serv_address.sin_addr));
-
 
     struct sockaddr_in client_address;
 
