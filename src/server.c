@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
         printf("It is necessary to inform the port. \n");
     }
     else {
+        printf("port is %s", argv[1]);
         serv_port = htons(atoi(argv[1]));
     }
     // server file descriptor
