@@ -16,7 +16,7 @@ void clean_input(char *input_str) {
     
 }
 
-int check_input (char * input_str) { 
+int check_input (char * input_str, EXPRESSION * expression) { 
     // check if input has structure "op1 operator op2" 
 
     float op1, op2;
@@ -24,6 +24,10 @@ int check_input (char * input_str) {
 
     if (sscanf(input_str, "%f%c%f", &op1, &operator, &op2) != 3) // this will do the trick for now
         return -1; // Parsing failed due to too much elements
+
+    expression->op1 = op1;
+    expression->op2 = op2;
+    expression->operator = operator;
 
     if (strchr("+-*/",operator) == NULL) 
         return -1; // Operator invalid
